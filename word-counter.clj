@@ -12,15 +12,7 @@
     
 (defn to-lower-case [token-string]
     (.toLowerCase token-string))
-    
-(defn count-words
-    "Counts words in a list, returning a map of the word and the number of 
-    occurences."
-    [wordlist]
-    (if (empty? wordlist)
-        {}
-    (reduce map-count-reduce {} (map to-lower-case wordlist))))
-
+        
 (defn map-count-reduce
     "Takes a map of keys -> numbers, and adds one to the key value of key string."
     [map1 keystring]
@@ -28,6 +20,13 @@
     ;; adding 1 to the value that's there, or zero if there's nothing
     (assoc map1 keystring (+ (if (map1 keystring) (map1 keystring) 0) 1)))
 
+(defn count-words
+    "Counts words in a list, returning a map of the word and the number of 
+    occurences."
+    [wordlist]
+    (if (empty? wordlist)
+        {}
+    (reduce map-count-reduce {} (map to-lower-case wordlist))))
 
 (defn count-words-line
     "Counts the number of words in a sequence of lines"
@@ -41,4 +40,4 @@
     [file-name]
     (count-words-line (file-lines file-name)))
 
-(count-file-words "posts-1000.xml")
+(count-file-words "posts-100000.xml")
