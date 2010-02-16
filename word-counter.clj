@@ -4,8 +4,8 @@
 
 (def words '("one" "two" "three" "four" "four" "four" "four"))
 
-(defn file-lines [file-name]
-    (line-seq (BufferedReader. (FileReader. file-name))))
+(defn file-lines [filename]
+    (line-seq (BufferedReader. (FileReader. filename))))
     
 (defn decode-html [string]
     (StringEscapeUtils/unescapeHtml string))
@@ -33,11 +33,11 @@
     [lines]
     (if (empty? lines)
         {}
-    (reduce (partial merge-with +) (map count-words (map (partial re-seq #"\w+") (map decode-html lines))))))
+    (reduce (partial merge-with +) (pmap count-words (pmap (partial re-seq #"\w+") (pmap decode-html lines))))))
 
 (defn count-file-words
     "Counts the words in a given file"
-    [file-name]
-    (count-words-line (file-lines file-name)))
+    [filename]
+    (count-words-line (file-lines filename)))
 
-(count-file-words "posts-100000.xml")
+(time (count-file-words "posts-1000.xml"))
